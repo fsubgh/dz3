@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ event.title }}</title>
+</head>
+<body>
+    <a href="/">← Назад к афише</a>
+
+    <h1>{{ event.title }}</h1>
+
+    <p>{{ event.description }}</p>
+    <p>Автор: {{ event.author.username }}</p>
+    <p>Цена: {{ event.price }} ₽</p>
+    <p>Максимум участников: {{ event.max_participants }}</p>
+
+    <h3>Категории</h3>
+    <ul>
+        {% for category in event.categories.all %}
+            <li>{{ category.name }}</li>
+        {% empty %}
+            <li>Категорий нет</li>
+        {% endfor %}
+    </ul>
+
+    <p>Количество участников: {{ event.participants_count }}</p>
+    <p>Количество категорий: {{ event.categories_count }}</p>
+    <p>Количество просмотров: {{ event.views_count }}</p>
+</body>
+</html>

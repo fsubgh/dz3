@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Статистика мероприятий</title>
+</head>
+<body>
+    <a href="/">← Главная</a>
+
+    <h1>Статистика мероприятий</h1>
+
+    <p>Сортировка по количеству участников:</p>
+
+    <a href="?sort=desc">Сначала больше участников</a> |
+    <a href="?sort=asc">Сначала меньше участников</a>
+
+    <table border="1" cellpadding="8">
+        <thead>
+            <tr>
+                <th>Мероприятие</th>
+                <th>Участники</th>
+                <th>Категории</th>
+                <th>Просмотры</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>
+                        <a href="{% url 'detail' event.id %}">
+                            {{ event.title }}
+                        </a>
+                    </td>
+                    <td>{{ event.participants_count }}</td>
+                    <td>{{ event.categories_count }}</td>
+                    <td>{{ event.views_count }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">Мероприятий пока нет.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

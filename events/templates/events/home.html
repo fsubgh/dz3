@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Афиша мероприятий</title>
+</head>
+<body>
+    <h1>Афиша мероприятий</h1>
+
+    <nav>
+        <a href="/">Главная</a> |
+        <a href="/statistics/">Статистика</a> |
+        <a href="/admin/">Админ-панель</a>
+    </nav>
+
+    <hr>
+
+    <form method="get">
+        <input
+            type="text"
+            name="q"
+            placeholder="Название, описание или категория"
+            value="{{ query }}"
+        >
+        <button type="submit">Найти</button>
+        <a href="/">Сбросить</a>
+    </form>
+
+    <h2>Активные мероприятия</h2>
+
+    {% for event in page_obj %}
+        <article>
+            <h3>
+                <a href="{% url 'detail' event.id %}">
+                    {{ event.title }}
+                </a>
+            </h3>
+
+            <p>{{ event.description }}</p>
+            <p>Автор: {{ event.author.username }}</p>
+            <p>Цена: {{ event.price }} ₽</p>
+
+            <p>Категории:
+                {% for category in event.categories.all %}
+                    {{ category.name }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    Нет категорий
+                {% endfor %}
+            </p>
+
+            <p>Участников: {{ event.participants_count }}</p>
+            <p>Категорий: {{ event.categories_count }}</p>
+            <p>Просмотров: {{ event.views_count }}</p>
+        </article>
+        <hr>
+    {% empty %}
+        <p>Мероприятия не найдены.</p>
+    {% endfor %}
+
+    <div>
+        {% if page_obj.has_previous %}
+            <a href="?q={{ query|urlencode }}&page={{ page_obj.previous_page_number }}">
+                Назад
+            </a>
+        {% endif %}
+
+        Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+
+        {% if page_obj.has_next %}
+            <a href="?q={{ query|urlencode }}&page={{ page_obj.next_page_number }}">
+                Далее
+            </a>
+        {% endif %}
+    </div>
+</body>
+</html>
